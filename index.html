@@ -33,12 +33,22 @@
     <main class="main-content">
       <header class="topbar">
         <div class="mobile-brand"><span class="brand-mark">p</span> pamoja<span class="brand-dot">.</span></div>
-        <div class="location-pill"><span>⌖</span><span><small>YOUR AREA</small><b>Nairobi, Kenya</b></span><span>⌄</span></div>
+        <div class="location-pill"><span>⌖</span><span><small>YOUR AREA</small><b>Your area</b></span><span>⌄</span></div>
         <div class="top-actions"><span class="live-indicator"><i></i> All systems demo</span><button class="icon-button" aria-label="Notifications">♧</button><span class="avatar">M</span></div>
       </header>
 
       <section class="view active" id="home-view">
-        <div class="welcome-row"><div><p class="eyebrow">MONDAY, YOUR WAY</p><h1>Karibu to <span>Pamoja.</span></h1><p class="muted">Your neighbourhood, your services, all in one place.</p></div><div class="welcome-art"><span>✳</span><span>✦</span><span>↗</span></div></div>
+        <div class="welcome-row"><div><p class="eyebrow">MONDAY, YOUR WAY</p><h1>Karibu to <span>Pamoja.</span></h1><p class="muted">Your neighbourhood, your services, all in one place. Start in WhatsApp — no Pamoja download required.</p></div><div class="welcome-art"><span>✳</span><span>✦</span><span>↗</span></div></div>
+        
+        <section class="whatsapp-first panel" aria-labelledby="whatsapp-title">
+          <div class="whatsapp-copy"><span class="wa-kicker">NO DOWNLOAD NEEDED</span><h2 id="whatsapp-title">Pamoja lives where your people are.</h2><p>Start in WhatsApp. Discover shops, place orders, request rides and get updates in the same conversation. A web experience is available when you want more detail.</p><div class="wa-steps"><span>01 <b>Message Pamoja</b></span><span>02 <b>Choose a service</b></span><span>03 <b>Share location when asked</b></span></div><p class="wa-note">The official WhatsApp bot activates after we connect its verified business number. This preview does not pretend a bot is already connected.</p></div>
+          <div class="wa-action"><div class="wa-mark">◉</div><b>WhatsApp-first access</b><small>No separate Pamoja app installation.</small><button class="button button-dark" id="whatsapp-start">Share Pamoja on WhatsApp ↗</button></div>
+        </section>
+        <section class="location-panel" aria-labelledby="location-title">
+          <div><p class="eyebrow">YOUR CHOICE, YOUR PRIVACY</p><h2 id="location-title">Find what’s close to you.</h2><p class="muted">Share your location only when you choose. It helps find nearby businesses and pickup points.</p></div>
+          <div class="location-controls"><button class="button button-dark" id="share-location">⌖ Share my location</button><label class="manual-location">Or enter your area<input id="manual-location" type="text" placeholder="e.g. Mlolongo, Nairobi"></label><button class="button button-outline" id="save-area">Use this area</button></div>
+          <p class="location-status" id="location-status" role="status" aria-live="polite">Location is off. You can continue without sharing it.</p>
+        </section>
         <div class="hero-card"><div class="hero-copy"><span class="hero-tag">THE LOCAL LIFE, CONNECTED</span><h2>Everything you need.<br>One less thing to juggle.</h2><p>Find a biashara, order what you love, get a ride and keep your people close.</p><button class="button button-light" data-go="discover">Explore Pamoja <span>→</span></button></div><div class="hero-orbit"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-center">p.</div><span class="orbit-chip chip-shop">🛍️</span><span class="orbit-chip chip-ride">🚕</span><span class="orbit-chip chip-chat">💬</span><span class="orbit-chip chip-wallet">◈</span></div></div>
         <div class="section-heading"><div><p class="eyebrow">YOUR EVERYDAY TOOLKIT</p><h2>What do you need today?</h2></div></div>
         <div class="service-grid">
