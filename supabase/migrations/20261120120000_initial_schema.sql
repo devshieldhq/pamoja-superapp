@@ -85,7 +85,7 @@ create table public.ride_requests (
   destination_latitude double precision,
   destination_longitude double precision,
   vehicle_type text not null default 'standard'
-    check (vehicle_type in ('standard',' boda','van')),
+    check (vehicle_type in ('standard','boda','van')),
   status text not null default 'requested'
     check (status in ('requested','accepted','driver_arriving','in_progress','completed','cancelled')),
   quoted_fare_kes numeric(12,2) check (quoted_fare_kes is null or quoted_fare_kes >= 0),
@@ -191,19 +191,8 @@ create policy "products_owner_delete" on public.products
 
 create policy "orders_customer_read" on public.orders
   for select to authenticated using (customer_id = (select auth.uid()));
-create policy "orders_customer_insert" on public.orders
-  for insert to authenticated with check (customer_id = (select auth.uid()));
-create policy "orders_customer_update" on public.orders
-  for update to authenticated using (customer_id = (select auth.uid()) and status = 'pending')
-  with check (customer_id = (select auth.uid()));
 create policy "orders_merchant_read" on public.orders
   for select to authenticated using (
-    exists (select 1 from public.merchants m where m.id = merchant_id and m.owner_id = (select auth.uid()))
-  );
-create policy "orders_merchant_update" on public.orders
-  for update to authenticated using (
-    exists (select 1 from public.merchants m where m.id = merchant_id and m.owner_id = (select auth.uid()))
-  ) with check (
     exists (select 1 from public.merchants m where m.id = merchant_id and m.owner_id = (select auth.uid()))
   );
 
@@ -214,10 +203,6 @@ create policy "order_items_participant_read" on public.order_items
         select 1 from public.merchants m where m.id = o.merchant_id and m.owner_id = (select auth.uid())
       )
     ))
-  );
-create policy "order_items_customer_insert" on public.order_items
-  for insert to authenticated with check (
-    exists (select 1 from public.orders o where o.id = order_id and o.customer_id = (select auth.uid()) and o.status = 'pending')
   );
 
 create policy "rides_rider_read" on public.ride_requests
@@ -249,10 +234,12 @@ grant select on public.merchants, public.products to anon;
 grant select, insert, update on public.profiles to authenticated;
 grant select, insert, update on public.merchants to authenticated;
 grant select, insert, update, delete on public.products to authenticated;
-grant select, insert, update on public.orders to authenticated;
-grant select, insert on public.order_items to authenticated;
+grant select on public.orders to authenticated;
+grant select on public.order_items to authenticated;
 grant select, insert, update on public.ride_requests to authenticated;
 grant select, insert, update on public.whatsapp_links to authenticated;
 grant select on public.wallet_accounts, public.wallet_transactions to authenticated;
 
+-- Orders, order items and wallet ledger are read-only to clients. A trusted server-side
+-- order-creation workflow must calculate prices and perform state transitions.
 -- No client write grants on wallet tables. Service-role workflows own ledger writes.
