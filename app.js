@@ -34,3 +34,37 @@ $("#mpesa-button").addEventListener("click",()=>openModal("M-Pesa integration","
 $("#modal-content").addEventListener("click",e=>{if(e.target.id==="mpesa-ok")closeModal()});
 $("#whatsapp-share").addEventListener("click",()=>{const text=encodeURIComponent("Check out Pamoja — a local-first way to discover businesses, plan rides and stay connected. Explore the demo: "+location.href);window.open("https://wa.me/?text="+text,"_blank","noopener,noreferrer")});
 renderBusinesses();
+
+// Consent-first location sharing for the web preview. WhatsApp users share location
+// through WhatsApp's own attachment/location flow after the bot asks for it.
+const locationStatus = document.querySelector("#location-status");
+const locationButton = document.querySelector("#share-location");
+const manualArea = document.querySelector("#manual-location");
+function setLocationStatus(message, state="") { if (!locationStatus) return; locationStatus.textContent = message; locationStatus.className = "location-status " + state; }
+if (locationButton) locationButton.addEventListener("click", () => {
+  if (!("geolocation" in navigator)) { setLocationStatus("Location sharing is unavailable in this browser. Enter your area instead.", "error"); return; }
+  setLocationStatus("Waiting for your permission…");
+  navigator.geolocation.getCurrentPosition(position => {
+    const { latitude, longitude } = position.coords;
+    setLocationStatus("Location permission granted for this demo session. Coordinates are not sent to a server or saved. In WhatsApp, use Attach → Location → Send your current location.", "success");
+    locationButton.textContent = "✓ Location permission granted";
+    locationButton.dataset.latitude = latitude.toFixed(5);
+    locationButton.dataset.longitude = longitude.toFixed(5);
+  }, error => {
+    const message = error.code === 1 ? "You declined location access. That's okay — enter your area manually or continue without location." : "We couldn't get your location. Enter your area manually or try again.";
+    setLocationStatus(message, "error");
+  }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 });
+});
+const saveAreaButton = document.querySelector("#save-area");
+if (saveAreaButton) saveAreaButton.addEventListener("click", () => {
+  const area = (manualArea?.value || "").trim();
+  if (!area) { setLocationStatus("Enter an area first, or continue without sharing location.", "error"); return; }
+  setLocationStatus("Area selected for this demo: " + area + ". It has not been sent to a server.", "success");
+  const areaLabel = document.querySelector(".location-pill b"); if (areaLabel) areaLabel.textContent = area;
+});
+const waStart = document.querySelector("#whatsapp-start");
+if (waStart) waStart.addEventListener("click", () => {
+  const message = encodeURIComponent("Hi! I'd like to try Pamoja. Please show me how to discover local businesses, order, request a ride and share my location when needed.");
+  window.open("https://wa.me/?text=" + message, "_blank", "noopener,noreferrer");
+  toast("WhatsApp opened with a Pamoja introduction. The official Pamoja bot number will be connected in the backend phase.");
+});
