@@ -2,12 +2,12 @@
   const markets = {
     KE: { name: "Kenya", currency: "KES", locale: "en-KE", symbol: "KSh", demo: 2450, increment: 500 },
     US: { name: "United States", currency: "USD", locale: "en-US", symbol: "$", demo: 24.50, increment: 5 },
-    GB: { name: "United Kingdom", currency: "GBP", locale: "en-GB", symbol: "£", demo: 24.50 },
+    GB: { name: "United Kingdom", currency: "GBP", locale: "en-GB", symbol: "£", demo: 24.50, increment: 5 },
     NG: { name: "Nigeria", currency: "NGN", locale: "en-NG", symbol: "₦", demo: 24500, increment: 5000 },
     ZA: { name: "South Africa", currency: "ZAR", locale: "en-ZA", symbol: "R", demo: 245, increment: 50 },
     AE: { name: "United Arab Emirates", currency: "AED", locale: "en-AE", symbol: "د.إ", demo: 90, increment: 20 },
     IN: { name: "India", currency: "INR", locale: "en-IN", symbol: "₹", demo: 2450, increment: 500 },
-    FR: { name: "France", currency: "EUR", locale: "fr-FR", symbol: "€", demo: 24.50 }
+    FR: { name: "France", currency: "EUR", locale: "fr-FR", symbol: "€", demo: 24.50, increment: 5 }
   };
   const stored = (() => { try { return localStorage.getItem("pamoja-market") || "KE"; } catch { return "KE"; } })();
   const topbar = document.querySelector(".topbar");
@@ -32,7 +32,8 @@
     const label = document.querySelector("#send-form label:nth-child(2)");
     if (label) label.firstChild.textContent = "Amount (" + markets[select.value].currency + ")";
   };
-  window.PamojaMarket = { current: () => markets[select.value], balance: () => markets[select.value].demo, adjust: amount => { markets[select.value].demo = Math.max(0, markets[select.value].demo + amount); }, format: amount => markets[select.value].symbol + " " + Number(amount).toLocaleString(markets[select.value].locale, {minimumFractionDigits:2, maximumFractionDigits:2}) };\n  function applyMarket(code) {
+  window.PamojaMarket = { current: () => markets[select.value], balance: () => markets[select.value].demo, adjust: amount => { markets[select.value].demo = Math.max(0, markets[select.value].demo + amount); }, format: amount => markets[select.value].symbol + " " + Number(amount).toLocaleString(markets[select.value].locale, {minimumFractionDigits:2, maximumFractionDigits:2}) };
+  function applyMarket(code) {
     const market = markets[code] || markets.KE;
     document.documentElement.dataset.market = code;
     document.documentElement.lang = code === "FR" ? "fr" : "en";
