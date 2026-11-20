@@ -2,7 +2,16 @@
 
 **Your community. Your services. One WhatsApp conversation.**
 
-Pamoja is a Kenya-first, community-powered super-app designed around a simple promise: people should be able to access useful local services through WhatsApp without downloading another app. A lightweight web experience supports discovery and richer views when needed.
+Pamoja is an international-ready, community-powered super-app launching with Kenya as its first market. Its product architecture is intended to support country-specific discovery, currencies, phone numbers, payment providers and transport partners as markets are onboarded. The current browser prototype includes a market selector for Kenya, the United States, the United Kingdom, Nigeria, South Africa, the United Arab Emirates, India and France. The selector changes illustrative demo display values only; it does not perform currency conversion or activate local payments. The product is designed around a simple promise: people should be able to access useful local services through WhatsApp without downloading another app. A lightweight web experience supports discovery and richer views when needed.
+
+## International rollout principles
+
+- **Market-aware experience:** a user can choose a country/market; the current prototype selector is a presentation setting, not verified geolocation or account residency.
+- **Currency:** demo wallet labels can be previewed in KES, USD, GBP, NGN, ZAR, AED, INR and EUR. No live exchange rates or currency conversion are implemented.
+- **Phone numbers:** forms should accept international E.164-style numbers with country codes.
+- **Payments:** integrate providers market by market (starting with Safaricom Daraja in Kenya); do not imply cross-border payments until providers, compliance and settlement are implemented.
+- **Language:** English is the initial interface language. Translation and right-to-left layout are future localization work.
+- **Local operations:** merchant discovery, delivery, rides, tax, consumer protection and support must be configured for each launch country.
 
 ## Product experience
 
@@ -30,7 +39,7 @@ The WhatsApp Cloud API backend code now supports:
 
 The first webhook version does not persist messages or coordinates. It does not yet query real merchants, create orders, book rides, or process payments. The replies clearly identify these features as not active.
 
-The browser prototype still uses illustrative businesses and wallet activity. No real M-Pesa transactions, authentication, merchant order processing or driver dispatch are active yet.
+The browser prototype still uses illustrative Kenyan businesses and wallet activity. The international market selector is a UI preview only; it does not create country-specific merchant data or change backend routing. No real M-Pesa transactions, authentication, merchant order processing or driver dispatch are active yet.
 
 ## WhatsApp Cloud API setup
 
@@ -84,7 +93,7 @@ Set the WhatsApp environment variables before starting the backend. The frontend
 
 ## Tech
 
-Vanilla HTML, CSS and JavaScript for the initial prototype. Node.js provides the first independently hosted WhatsApp webhook backend. Supabase will provide the database and authentication layer in a later phase.
+Vanilla HTML, CSS and JavaScript for the initial prototype, including a lightweight market selector. Node.js provides the first independently hosted WhatsApp webhook backend. Supabase will provide the database and authentication layer in a later phase.
 
 ---
 
