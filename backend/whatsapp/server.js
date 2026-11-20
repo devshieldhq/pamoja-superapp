@@ -27,17 +27,18 @@ function sendJson(res, status, data) {
 
 function menuText() {
   return [
-    "Welcome to Pamoja 🇰🇪",
+    "Welcome to Pamoja 🌍",
     "Your community. Your services. One WhatsApp conversation.",
     "",
     "What would you like to do?",
     "1️⃣ Find nearby businesses",
     "2️⃣ Explore products and orders",
     "3️⃣ Request a ride",
-    "4️⃣ Wallet and M-Pesa",
+    "4️⃣ Wallet and local payments",
     "5️⃣ Share my location",
     "Type MENU at any time to see these options.",
     "",
+    "First, tell us your country and city so we can show relevant local services.",
     "You stay in control. Share your location only when you choose.",
   ].join("\n");
 }
@@ -88,7 +89,7 @@ function buildReply(message) {
     return "Ride requests are being built. No driver has been contacted and no trip has been booked.\n\nType MENU to go back.";
   }
   if (["4", "wallet", "mpesa", "m-pesa", "pay"].includes(input)) {
-    return "Pamoja wallet and M-Pesa payments are not active yet. Please don't send money or share your M-Pesa PIN here.\n\nType MENU to go back.";
+    return "Pamoja wallet and local payment options are not active yet in your market. Never send money or share a payment PIN in this chat.\n\nType MENU to go back.";
   }
   if (["privacy", "data", "my data"].includes(input)) {
     return "Your privacy matters. This webhook does not store your messages or shared coordinates. Do not send passwords, PINs, or payment credentials. Persistent account and privacy controls will be added with the database integration.";
