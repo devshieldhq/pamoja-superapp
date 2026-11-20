@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101b17">
+  <meta name="description" content="Pamoja brings local shopping, rides, community and payments together in one simple place.">
+  <title>Pamoja — Everything, together</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Pamoja home"><span class="brand-mark">p</span><span>pamoja<span class="brand-dot">.</span></span></a>
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="home"><span>⌂</span> Overview</button>
+        <button class="nav-link" data-view="discover"><span>⌕</span> Discover</button>
+        <button class="nav-link" data-view="orders"><span>▤</span> My orders</button>
+        <button class="nav-link" data-view="rides"><span>↗</span> Rides</button>
+        <button class="nav-link" data-view="wallet"><span>◈</span> Wallet</button>
+        <button class="nav-link" data-view="community"><span>◉</span> Community</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><span class="help-icon">✳</span><strong>Good things happen together.</strong><p>Shop local. Move freely. Stay connected.</p></div>
+        <button class="profile-button"><span class="avatar">M</span><span><b>Guest account</b><small>Demo experience</small></span><span class="profile-more">···</span></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">p</span> pamoja<span class="brand-dot">.</span></div>
+        <div class="location-pill"><span>⌖</span><span><small>YOUR AREA</small><b>Nairobi, Kenya</b></span><span>⌄</span></div>
+        <div class="top-actions"><span class="live-indicator"><i></i> All systems demo</span><button class="icon-button" aria-label="Notifications">♧</button><span class="avatar">M</span></div>
+      </header>
+
+      <section class="view active" id="home-view">
+        <div class="welcome-row"><div><p class="eyebrow">MONDAY, YOUR WAY</p><h1>Karibu to <span>Pamoja.</span></h1><p class="muted">Your neighbourhood, your services, all in one place.</p></div><div class="welcome-art"><span>✳</span><span>✦</span><span>↗</span></div></div>
+        <div class="hero-card"><div class="hero-copy"><span class="hero-tag">THE LOCAL LIFE, CONNECTED</span><h2>Everything you need.<br>One less thing to juggle.</h2><p>Find a biashara, order what you love, get a ride and keep your people close.</p><button class="button button-light" data-go="discover">Explore Pamoja <span>→</span></button></div><div class="hero-orbit"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-center">p.</div><span class="orbit-chip chip-shop">🛍️</span><span class="orbit-chip chip-ride">🚕</span><span class="orbit-chip chip-chat">💬</span><span class="orbit-chip chip-wallet">◈</span></div></div>
+        <div class="section-heading"><div><p class="eyebrow">YOUR EVERYDAY TOOLKIT</p><h2>What do you need today?</h2></div></div>
+        <div class="service-grid">
+          <button class="service-card shop-card" data-go="discover"><span class="service-icon">🛍️</span><span class="service-arrow">↗</span><h3>Shop local</h3><p>Discover nearby businesses and order from them.</p><b>Explore businesses →</b></button>
+          <button class="service-card ride-card" data-go="rides"><span class="service-icon">🚕</span><span class="service-arrow">↗</span><h3>Get a ride</h3><p>Plan your next trip around town.</p><b>Request a ride →</b></button>
+          <button class="service-card wallet-card" data-go="wallet"><span class="service-icon">◈</span><span class="service-arrow">↗</span><h3>Your wallet</h3><p>See your demo balance and payment activity.</p><b>Open wallet →</b></button>
+          <button class="service-card chat-card" data-go="community"><span class="service-icon">💬</span><span class="service-arrow">↗</span><h3>Stay connected</h3><p>Share Pamoja with your WhatsApp circles.</p><b>Join the community →</b></button>
+        </div>
+        <div class="section-heading"><div><p class="eyebrow">GOOD THINGS NEAR YOU</p><h2>Local favourites</h2></div><button class="text-button" data-go="discover">See all businesses →</button></div>
+        <div class="business-grid" id="home-businesses"></div>
+        <footer>Made for the way we live. <span>© 2026 Pamoja</span></footer>
+      </section>
+
+      <section class="view" id="discover-view">
+        <div class="page-heading"><p class="eyebrow">SUPPORT YOUR NEIGHBOURHOOD</p><h1>Discover <span>local.</span></h1><p class="muted">Find something good, right around the corner.</p></div>
+        <label class="search-box"><span>⌕</span><input id="business-search" type="search" placeholder="Search shops, food, services..."><kbd>⌘ K</kbd></label>
+        <div class="filter-row" id="category-filters"><button class="filter-chip selected" data-category="All">All</button><button class="filter-chip" data-category="Food">🍲 Food</button><button class="filter-chip" data-category="Groceries">🥑 Groceries</button><button class="filter-chip" data-category="Fashion">👟 Fashion</button><button class="filter-chip" data-category="Services">✂️ Services</button></div>
+        <div class="business-grid discover-grid" id="discover-businesses"></div>
+      </section>
+
+      <section class="view" id="orders-view">
+        <div class="page-heading"><p class="eyebrow">YOUR ACTIVITY</p><h1>My <span>orders.</span></h1><p class="muted">Your demo order requests will show up here.</p></div>
+        <div class="empty-state" id="orders-empty"><div>🧺</div><h2>Your next good find is waiting.</h2><p>Explore local businesses and send an order request.</p><button class="button button-dark" data-go="discover">Discover businesses</button></div>
+        <div class="order-list" id="order-list"></div>
+      </section>
+
+      <section class="view" id="rides-view">
+        <div class="page-heading"><p class="eyebrow">MOVE AROUND WITH EASE</p><h1>Let's get you <span>there.</span></h1><p class="muted">A simple ride request demo. No driver is dispatched.</p></div>
+        <div class="ride-layout"><div class="panel ride-form"><div class="panel-title"><span class="round-icon">🚕</span><div><h2>Plan a ride</h2><p>Where are you headed?</p></div></div><form id="ride-form"><label>Pickup location<input required id="pickup" placeholder="e.g. Westlands, Nairobi"></label><label>Destination<input required id="destination" placeholder="e.g. Sarit Centre"></label><div class="ride-options"><label class="ride-option selected"><input type="radio" name="ride-type" value="Boda" checked><span>🏍️</span><b>Boda</b><small>Quick & nimble</small></label><label class="ride-option"><input type="radio" name="ride-type" value="Car"><span>🚗</span><b>Car</b><small>Comfort ride</small></label></div><button class="button button-dark full-button">Review ride request →</button></form><p class="fine-print">Demo only. No real booking, driver matching or payment.</p></div><div class="map-placeholder"><div class="map-grid"></div><div class="map-pin pin-a">A</div><div class="map-pin pin-b">B</div><div class="map-route"></div><div class="map-caption">NAIROBI • SAMPLE MAP</div></div></div>
+        <div id="ride-result" class="notice hidden"></div>
+      </section>
+
+      <section class="view" id="wallet-view">
+        <div class="page-heading"><p class="eyebrow">MONEY, MADE SIMPLE</p><h1>Your <span>wallet.</span></h1><p class="muted">A visual preview of how payments could work in Pamoja.</p></div>
+        <div class="wallet-card"><div class="wallet-top"><span>pamoja <b>◈</b></span><span class="wallet-status">DEMO WALLET</span></div><p>AVAILABLE DEMO BALANCE</p><h2>KSh 2,450<span>.00</span></h2><div class="wallet-bottom"><span>•••• &nbsp;•••• &nbsp;•••• &nbsp;2048</span><span>KENYA 🇰🇪</span></div></div>
+        <div class="wallet-actions"><button class="button button-dark" id="add-money">＋ Add demo funds</button><button class="button button-outline" id="send-money">↗ Send demo funds</button><button class="button button-outline" id="mpesa-button">M-Pesa concept</button></div>
+        <div class="panel transactions"><div class="section-heading"><h2>Recent activity</h2><span class="muted">Demo transactions</span></div><div id="transaction-list"><div class="transaction"><span class="transaction-icon">🛍️</span><span><b>Market shopping</b><small>Yesterday · Demo purchase</small></span><strong>− KSh 850</strong></div><div class="transaction"><span class="transaction-icon">＋</span><span><b>Wallet top-up</b><small>Monday · Demo credit</small></span><strong class="positive">+ KSh 1,500</strong></div></div></div>
+        <p class="fine-print">This is not a real wallet. No money is stored, transferred or charged. M-Pesa integration requires an authorized Daraja setup and secure backend.</p>
+      </section>
+
+      <section class="view" id="community-view">
+        <div class="page-heading"><p class="eyebrow">BETTER, TOGETHER</p><h1>Bring your people <span>along.</span></h1><p class="muted">Pamoja works best when your community knows about it.</p></div>
+        <div class="community-card"><div class="community-emoji">💬</div><div><span class="hero-tag">SHARE THE GOOD STUFF</span><h2>Your group chat just got more useful.</h2><p>Share Pamoja with friends, family or your chama on WhatsApp. They can explore the demo too.</p><button class="button button-dark" id="whatsapp-share">Share Pamoja on WhatsApp ↗</button></div></div>
+        <div class="community-points"><div><span>01</span><h3>Find local businesses</h3><p>Help people discover the shops and services around them.</p></div><div><span>02</span><h3>Make plans together</h3><p>Share a ride idea, an order or a useful local find.</p></div><div><span>03</span><h3>Keep it in the conversation</h3><p>WhatsApp is where the community already is.</p></div></div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal-backdrop hidden" id="modal"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="modal-close" id="modal-close" aria-label="Close">×</button><div class="modal-icon" id="modal-icon">🛍️</div><h2 id="modal-title">Order request</h2><p id="modal-copy"></p><div id="modal-content"></div></div></div>
+  <script src="app.js"></script>
+</body>
+</html>
