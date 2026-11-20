@@ -1,100 +1,155 @@
-# Pamoja
+# Pamoja — Your World, Connected
 
-**Your community. Your services. One WhatsApp conversation.**
+**A WhatsApp-first super-app prototype for discovering local businesses, exploring services, planning rides and previewing payments.**
 
-Pamoja is an international-ready, community-powered super-app launching with Kenya as its first market. Its product architecture is intended to support country-specific discovery, currencies, phone numbers, payment providers and transport partners as markets are onboarded. The current browser prototype includes a market selector for Kenya, the United States, the United Kingdom, Nigeria, South Africa, the United Arab Emirates, India and France. The selector changes illustrative demo display values only; it does not perform currency conversion or activate local payments. The product is designed around a simple promise: people should be able to access useful local services through WhatsApp without downloading another app. A lightweight web experience supports discovery and richer views when needed.
+Pamoja is being built around a simple idea: people should be able to access useful local services through a familiar WhatsApp conversation, with a lightweight web companion for richer discovery and interaction.
 
-## International rollout principles
+The prototype starts with Kenya and is designed with international markets in mind. It is an early-stage demo, not a production marketplace or financial service.
 
-- **Market-aware experience:** a user can choose a country/market; the current prototype selector is a presentation setting, not verified geolocation or account residency.
-- **Currency:** demo wallet labels can be previewed in KES, USD, GBP, NGN, ZAR, AED, INR and EUR. No live exchange rates or currency conversion are implemented.
-- **Phone numbers:** forms should accept international E.164-style numbers with country codes.
-- **Payments:** integrate providers market by market (starting with Safaricom Daraja in Kenya); do not imply cross-border payments until providers, compliance and settlement are implemented.
-- **Language:** English is the initial interface language. Translation and right-to-left layout are future localization work.
-- **Local operations:** merchant discovery, delivery, rides, tax, consumer protection and support must be configured for each launch country.
+## Try the prototype
 
-## Product experience
+- **Web prototype:** https://pamoja-superapp.onrender.com
+- **WhatsApp webhook service:** https://pamoja-whatsapp.onrender.com
+- **Source code:** https://github.com/devshieldhq/pamoja-superapp
 
-- **WhatsApp-first access:** the WhatsApp backend includes a starter menu and replies for common commands.
-- **Consent-based location:** users choose whether to share their location through WhatsApp's native location-sharing flow. Users can decline or type their area manually.
-- **Local discovery:** browse sample businesses, search and filter by category.
-- **Order requests:** select sample items and create a demo order request.
-- **Ride requests:** enter pickup and destination and preview a ride request.
-- **Wallet concept:** explore a demo balance and simulated activity.
-- **Responsive web companion:** use the browser experience without installing a Pamoja app.
+The web frontend is hosted on Render as a static site and is configured to deploy from the `main` branch. The WhatsApp webhook is a separate Node.js Render web service.
 
-## Current integration status
+## What you can try today
 
-The WhatsApp Cloud API backend code now supports:
+### Web prototype
+- Browse sample local businesses.
+- Search businesses and filter by category.
+- Open a sample menu and submit an order request.
+- Create a ride request preview with pickup, destination and ride type.
+- Explore a demo wallet, add demo funds and simulate a transfer.
+- Choose to share browser location or enter an area manually.
+- Share Pamoja through WhatsApp.
+
+**Demo data and persistence:** Orders, ride previews, wallet balance and demo transactions are stored in the browser's local storage on the device and browser where they were created. They are not synced to an account or backend and may not appear on another device or browser. Clearing browser data can remove them.
+
+### WhatsApp integration
+The Node.js service in `backend/whatsapp` contains:
 - Meta GET webhook subscription verification.
-- HMAC SHA-256 verification of incoming POST requests using the raw request body.
+- HMAC SHA-256 verification for incoming webhook POST requests.
 - A 1 MB request-body limit.
 - Incoming text and shared-location message handling.
-- A starter menu and replies for business discovery, orders, rides, wallet/M-Pesa and location instructions.
-- Outbound text replies through the WhatsApp Cloud API when credentials are configured.
-- Best-effort in-memory message de-duplication for retries.
-- A health endpoint that reports whether required credentials are configured without exposing their values.
+- Starter menu replies for discovery, orders, rides, wallet and location instructions.
+- Outbound text replies through the WhatsApp Cloud API when the required credentials are configured.
+- Best-effort in-memory message de-duplication.
+- A `/health` endpoint that reports credential configuration without returning secret values.
 
-**This is backend code, not a live WhatsApp connection yet.** The Render web service still needs to be created and deployed, server-side secrets need to be configured, and Meta's webhook must be pointed to the service. In-memory de-duplication is temporary and resets when the process restarts; durable idempotency will be added with the database.
+## What is not live yet
 
-The first webhook version does not persist messages or coordinates. It does not yet query real merchants, create orders, book rides, or process payments. The replies clearly identify these features as not active.
+This project is a prototype. Please do not mistake sample data or simulated actions for completed services.
 
-The browser prototype still uses illustrative Kenyan businesses and wallet activity. The international market selector is a UI preview only; it does not create country-specific merchant data or change backend routing. No real M-Pesa transactions, authentication, merchant order processing or driver dispatch are active yet.
+- Sample businesses and menus are illustrative, not live merchant listings.
+- Web order requests are saved only in the current browser; no merchant receives or fulfils them.
+- Ride requests are previews; no driver is contacted and no trip is booked.
+- The wallet is simulated. No real funds are held, transferred or charged.
+- M-Pesa / Daraja payments are not integrated.
+- The WhatsApp bot's production phone-number onboarding is not complete. Meta business portfolio restrictions currently prevent adding a production number. The webhook service is deployed, but end-to-end WhatsApp messaging requires valid Meta credentials, webhook subscription and an eligible connected test or production number.
+- Supabase authentication and database persistence are planned, not connected to this prototype.
+- The international market selector is a presentation preview. It does not perform live currency conversion, localize merchant data or enable country-specific payment providers.
 
-## WhatsApp Cloud API setup
+## Project architecture
 
-The Node.js webhook service is in `backend/whatsapp`.
+```text
+pamoja-superapp/
+├── index.html                 # Web app structure
+├── style.css                  # Responsive interface
+├── app.js                     # Demo interactions and browser storage
+├── international.js           # Market / currency presentation preview
+└── backend/
+    └── whatsapp/
+        ├── server.js           # WhatsApp Cloud API webhook
+        └── package.json
+```
 
-1. Create a Render Web Service from this repository, branch `main`, runtime Node.
-2. Set the build command to `npm install --prefix backend/whatsapp`.
-3. Set the start command to `npm start --prefix backend/whatsapp`.
-4. Add these environment variables in the Render service dashboard:
-   - `WHATSAPP_VERIFY_TOKEN` — a strong random string you create and also enter in Meta's webhook configuration.
-   - `WHATSAPP_APP_SECRET` — the Meta app secret, used to verify webhook signatures.
-   - `WHATSAPP_ACCESS_TOKEN` — a server-side WhatsApp Cloud API access token.
-   - `WHATSAPP_PHONE_NUMBER_ID` — the WhatsApp Business phone number ID.
-   - `WHATSAPP_GRAPH_API_VERSION` — optional; defaults to `v27.0`.
-5. Confirm the service health at `/health`.
-6. Set the Meta callback URL to `https://<RENDER_SERVICE_HOST>/webhooks/whatsapp`, enter the same verify token, and subscribe to the `messages` webhook field.
-7. Send a test message to the connected WhatsApp Business number and confirm the bot replies.
-
-Meta app credentials and access tokens must remain server-side. Use a long-lived system-user token for production, with only the permissions required by the integration. Follow Meta's current onboarding and messaging policies.
+- **Frontend:** Vanilla HTML, CSS and JavaScript.
+- **Hosting:** Render Static Site.
+- **WhatsApp webhook:** Node.js on Render.
+- **Planned data/auth layer:** Supabase.
 
 ## Run locally
 
-The static frontend needs no build step. To run the WhatsApp backend locally, use Node.js 20 or newer:
+### Web prototype
+
+The frontend has no build step. From the repository root, run:
+
+```bash
+python -m http.server 8000
+```
+
+Then open http://localhost:8000.
+
+Some browser capabilities, including geolocation, require a secure context such as HTTPS or localhost and user permission.
+
+### WhatsApp webhook
+
+Requires Node.js 20 or newer:
 
 ```bash
 cd backend/whatsapp
+npm install
 npm start
 ```
 
-Set the WhatsApp environment variables before starting the backend. The frontend can be served separately with `python -m http.server 8000`.
+The service listens on the port supplied by the hosting platform, or port 10000 by default.
 
-## Backend roadmap
+## WhatsApp Cloud API configuration
 
-1. Deploy and test WhatsApp Cloud API end to end.
-2. Integrate Safaricom Daraja with server-side credentials, STK Push and verified callbacks.
-3. Create the separate Pamoja Supabase project, apply the schema, configure row-level security and authentication.
-4. Connect durable webhook idempotency, merchant onboarding, catalogues, inventory and secure order lifecycle.
-5. Build driver onboarding, consent-based trip location sharing, dispatch and trip status.
-6. Add notifications, privacy controls, rate limits, audit logs and account deletion workflows.
-7. Add automated tests, monitoring and production deployment configuration.
+Configure secrets as environment variables in the backend hosting dashboard. Do not commit them to Git or paste them into public issue reports.
+
+Required variables:
+- `WHATSAPP_VERIFY_TOKEN` — a strong value also entered in Meta's webhook configuration.
+- `WHATSAPP_APP_SECRET` — used to validate webhook signatures.
+- `WHATSAPP_ACCESS_TOKEN` — server-side Cloud API access token.
+- `WHATSAPP_PHONE_NUMBER_ID` — the connected WhatsApp phone-number ID.
+
+Optional:
+- `WHATSAPP_GRAPH_API_VERSION` — Graph API version used by the service.
+
+Webhook callback path:
+
+```text
+https://<YOUR_BACKEND_HOST>/webhooks/whatsapp
+```
+
+Subscribe the WhatsApp Business Account to the `messages` webhook field in Meta. Verify the callback using the same `WHATSAPP_VERIFY_TOKEN`. Test with an eligible Meta test number and an authorized recipient before attempting production onboarding.
+
+Check service status at:
+
+```text
+https://<YOUR_BACKEND_HOST>/health
+```
+
+The health response indicates whether each credential is configured. It never returns credential values. A healthy endpoint alone does not prove that Meta can deliver events or that outbound messaging is authorized.
+
+## Roadmap
+
+1. Complete a reliable end-to-end WhatsApp test-number conversation.
+2. Improve the demo so order and ride workflows have clear confirmation and status screens.
+3. Create and connect the Pamoja Supabase project for accounts, merchant data and durable order records.
+4. Build merchant onboarding, real catalogues, inventory and order fulfilment.
+5. Integrate Safaricom Daraja in sandbox first, then production after required approvals and verification.
+6. Build driver onboarding, dispatch, trip status and consent-based location sharing.
+7. Add notifications, privacy controls, rate limits, audit logs, monitoring and account deletion workflows.
+8. Add automated tests and prepare production deployment and compliance reviews.
 
 ## Security and privacy principles
 
-- Never expose API keys, access tokens, Supabase service-role keys or payment credentials in frontend code.
+- Keep API keys, access tokens, app secrets, database passwords and payment credentials on the server.
 - Verify WhatsApp webhook signatures and payment callbacks server-side.
-- Verify payment callbacks before marking an order as paid.
-- Ask before accessing location; provide manual area entry and a no-location path.
-- Request live location only when needed for an active ride and explain who can see it.
-- Use HTTPS, authorization checks, row-level security, rate limits and audit trails.
-- Do not log message contents, phone numbers, coordinates, access tokens or payment details.
+- Never mark an order paid until a payment callback has been authenticated and validated.
+- Ask before accessing location and provide manual area entry or a no-location option.
+- Request live location only when it is needed for an active service and explain how it will be used.
+- Avoid logging message contents, phone numbers, coordinates, access tokens or payment details.
+- Do not ask users for passwords, one-time codes or M-Pesa PINs.
 
-## Tech
+## Contributing
 
-Vanilla HTML, CSS and JavaScript for the initial prototype, including a lightweight market selector. Node.js provides the first independently hosted WhatsApp webhook backend. Supabase will provide the database and authentication layer in a later phase.
+Pamoja is an evolving prototype. Issues and contributions should distinguish working prototype behaviour from planned integrations. Never include credentials, personal data or private customer information in commits or issue reports.
 
 ---
 
-Built for the community. Built together. **Pamoja.**
+**Pamoja — Your community. Your services. One connected experience.**
